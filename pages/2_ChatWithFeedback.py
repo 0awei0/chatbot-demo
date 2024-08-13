@@ -15,23 +15,23 @@ def update_chat(client):
         st.session_state['answer_complete'] = False
 
         # 用户提问也存入问答历史中
-        st.session_state.messages.append({"role": "user", "content": prompt})
+        st.session_state.messages_multiple.append({"role": "user", "content": prompt})
 
         with st.chat_message("user"):
             st.markdown(prompt)  # 显示用户输入
 
         # 得到模型的回答并写入网页对话框
         with st.chat_message("assistant"):
-            messages = []
-            for message in st.session_state['messages']:
+            messages_multiple = []
+            for message in st.session_state['messages_multiple']:
                 if message['role'] == 'user':
-                    messages.append({"role": "user", "content": message['content']})
+                    messages_multiple.append({"role": "user", "content": message['content']})
                 else:
-                    messages.append({"role": "assistant", "content": message['content'][0]})
+                    messages_multiple.append({"role": "assistant", "content": message['content'][0]})
 
             stream = client.chat.completions.create(
                 model=st.session_state["openai_model"],
-                messages=messages,
+                messages=messages_multiple,
                 stream=True,
             )
 
@@ -47,7 +47,7 @@ def update_chat(client):
 
         st.session_state['answer_complete'] = True
         # 这里的response是一个字符串，是模型对当前问题的回答，将其存入问答历史中
-        st.session_state.messages.append({"role": "assistant", "content": responses})
+        st.session_state.messages_multiple.append({"role": "assistant", "content": responses})
         # write_files()
 
 
@@ -60,11 +60,11 @@ def chatgpt_with_multiple_answers():
         st.session_state["openai_model"] = "gpt-3.5-turbo-0125"
 
     # 初始化聊天记录
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
+    if "messages_multiple" not in st.session_state:
+        st.session_state.messages_multiple = []
 
     # 每次都刷新当前的聊天记录显示
-    for message in st.session_state.messages:
+    for message in st.session_state.messages_multiple:
         with st.chat_message(message["role"]):
             if isinstance(message['content'], list):
                 for index, content in enumerate(message['content']):
@@ -76,8 +76,8 @@ def chatgpt_with_multiple_answers():
 
 
 def get_data():
-    if st.session_state.get("messages"):
-        data = st.session_state['messages']
+    if st.session_state.get("messages_multiple"):
+        data = st.session_state['messages_multiple']
         if len(data) >= 2:
             data = data[-2:]
             if data[0].get("role") == "user" and data[1].get("role") == 'assistant':
