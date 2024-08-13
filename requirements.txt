@@ -1,0 +1,8 @@
+streamlit==1.37.0
+streamlit_chat==0.1.1
+websocket_client==1.8.0
+spark_ai_python==0.4.1
+openai==1.38.0
+websocket-client==1.8.0
+pymongo==4.3.3
+streamlit_feedback==0.1.3
