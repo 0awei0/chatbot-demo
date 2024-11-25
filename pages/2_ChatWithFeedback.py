@@ -53,11 +53,11 @@ def update_chat(client):
 
 def chatgpt_with_multiple_answers():
     key = 'sk-SFXiex2MCespk9H83d766aE49cCd4cFd8a5b4dEbAb728507'
-    client = OpenAI(api_key=key, base_url="https://free.gpt.ge/v1/", default_headers={"x-foo": "true"})
-
+    # client = OpenAI(api_key=key, base_url="https://free.gpt.ge/v1/", default_headers={"x-foo": "true"})
+    client = OpenAI(api_key="sk-770a1b142cb24646ac6cc9f49c744b4c", base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",)
     # 初始化聊天使用的模型
     if "openai_model" not in st.session_state:
-        st.session_state["openai_model"] = "gpt-3.5-turbo-0125"
+        st.session_state["openai_model"] = "qwen-max"
 
     # 初始化聊天记录
     if "messages_multiple" not in st.session_state:
